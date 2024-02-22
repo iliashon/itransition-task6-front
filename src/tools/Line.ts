@@ -1,6 +1,7 @@
 import Tool from "@/tools/Tool";
 import { Socket } from "socket.io-client";
 import { DefaultEventsMap } from "@socket.io/component-emitter";
+import { TStaticDrawBrush, TStaticDrawLine } from "@/types/TStaticDraw";
 
 export default class Line extends Tool {
     private isMouseDown: boolean;
@@ -81,5 +82,17 @@ export default class Line extends Tool {
             this.lastY = y;
             this.context?.stroke();
         };
+    }
+    static draw(
+        { x, y, x1, y1, lineWidth, color }: TStaticDrawLine,
+        context: CanvasRenderingContext2D,
+    ) {
+        context?.beginPath();
+        context?.moveTo(x, y);
+        context?.lineTo(x1, y1);
+        context?.stroke();
+        context!.lineCap = "round";
+        context!.lineWidth = lineWidth;
+        context!.strokeStyle = "#000000";
     }
 }

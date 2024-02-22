@@ -1,5 +1,12 @@
 import Brush from "@/tools/Brush";
-import { LuBrush, LuCircle, LuEraser, LuMinus, LuSquare } from "react-icons/lu";
+import {
+    LuBrush,
+    LuCircle,
+    LuDownload,
+    LuEraser,
+    LuMinus,
+    LuSquare,
+} from "react-icons/lu";
 import Rect from "@/tools/Rect";
 import Circle from "@/tools/Circle";
 import Line from "@/tools/Line";
@@ -14,6 +21,7 @@ import {
     TStaticDrawBrush,
     TStaticDrawCircle,
     TStaticDrawEraser,
+    TStaticDrawLine,
     TStaticDrawRect,
 } from "@/types/TStaticDraw";
 
@@ -33,7 +41,6 @@ export default function ToolBar({
         useState<Socket<DefaultEventsMap, DefaultEventsMap>>();
     const params = useParams();
     const [propertyTool, setPropertyTool] = useState<IPropertyTool>({
-        fillColor: "#ffffff",
         strokeColor: "#000000",
         lineWidth: 5,
     });
@@ -67,10 +74,14 @@ export default function ToolBar({
                         );
                         break;
                     case "line":
-                        console.log(item);
+                        Line.draw(
+                            item.points as TStaticDrawLine,
+                            canvas.current?.getContext(
+                                "2d",
+                            ) as CanvasRenderingContext2D,
+                        );
                         break;
                     case "eraser":
-                        console.log(item);
                         Eraser.draw(
                             item.points as TStaticDrawEraser,
                             canvas.current?.getContext(
@@ -79,7 +90,6 @@ export default function ToolBar({
                         );
                         break;
                     case "brush":
-                        console.log(item);
                         Brush.draw(
                             item.points as TStaticDrawBrush,
                             canvas.current?.getContext(
@@ -91,17 +101,28 @@ export default function ToolBar({
             });
         });
         socket?.emit("get-points");
+        setPropertyTool({
+            lineWidth: 5,
+            strokeColor: "#000000",
+        });
     }, []);
 
     useEffect(() => {
         const context = canvas.current?.getContext("2d");
         context!.lineWidth = propertyTool.lineWidth;
         context!.strokeStyle = propertyTool.strokeColor;
-        context!.fillStyle = propertyTool.fillColor;
     }, [propertyTool]);
 
+    const handleDownload = () => {
+        const dataUrl = canvas.current?.toDataURL();
+        const a = document.createElement("a");
+        a.href = dataUrl as string;
+        a.download = "canvas.jpg";
+        a.click();
+    };
+
     return (
-        <div className="h-[80vh] mt-[10vh] rounded-xl ml-5 w-16 bg-gray-400 absolute top-0 flex flex-col justify-between left-0 py-4">
+        <div className="h-[98vh] mt-[1vh] rounded-xl ml-2 w-16 bg-gray-400 absolute top-0 flex flex-col justify-between left-0 py-4">
             <div className="flex flex-col items-center gap-5">
                 <button
                     className={`${activeTool[0] ? "scale-125" : ""} duration-200`}
@@ -170,15 +191,9 @@ export default function ToolBar({
                         });
                     }}
                 />
-                <input
-                    type="color"
-                    onChange={(e) => {
-                        setPropertyTool({
-                            ...propertyTool,
-                            fillColor: e.target.value,
-                        });
-                    }}
-                />
+                <button onClick={handleDownload}>
+                    <LuDownload className="h-8 w-8 text-white cursor-pointer" />
+                </button>
             </div>
         </div>
     );

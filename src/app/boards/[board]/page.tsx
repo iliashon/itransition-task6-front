@@ -12,7 +12,7 @@ export default function Page() {
 
     useEffect(() => {
         setSizeCanvas({
-            width: window.innerWidth,
+            width: window.innerWidth - 80,
             height: window.innerHeight,
         });
     }, []);
@@ -21,7 +21,7 @@ export default function Page() {
         <>
             <ToolBar canvas={canvas} />
             <canvas
-                className="bg-white"
+                className="bg-white float-right"
                 ref={canvas}
                 width={sizeCanvas?.width}
                 height={sizeCanvas?.height}

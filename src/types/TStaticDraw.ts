@@ -34,3 +34,12 @@ export type TStaticDrawBrush = {
     x: number;
     y: number;
 };
+
+export type TStaticDrawLine = {
+    color: string;
+    lineWidth: number;
+    x1: number;
+    y1: number;
+    x: number;
+    y: number;
+};
