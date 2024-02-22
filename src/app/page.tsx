@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { FaLongArrowAltRight } from "@react-icons/all-files/fa/FaLongArrowAltRight";
 import Header from "@/components/layout/Header";
+import { FaLongArrowAltRight } from "react-icons/fa";
 
 export default function Home() {
     return (
