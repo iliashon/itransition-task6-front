@@ -2,6 +2,7 @@ import Tool from "@/tools/Tool";
 import { Socket } from "socket.io-client";
 import { DefaultEventsMap } from "@socket.io/component-emitter";
 import { IPropertyTool } from "@/types/IPropertyTool";
+import { TStaticDrawRect } from "@/types/TStaticDraw";
 
 export default class Rect extends Tool {
     private isMouseDown: boolean;
@@ -37,6 +38,8 @@ export default class Rect extends Tool {
             y: this.startY,
             w: this.width,
             h: this.height,
+            color: this.context?.strokeStyle,
+            lineWidth: this.context?.lineWidth,
         };
         this.socket?.emit("drawing", {
             method: "rect",
@@ -88,10 +91,13 @@ export default class Rect extends Tool {
     }
 
     static draw(
-        { x, y, w, h }: { x: number; y: number; w: number; h: number },
+        { x, y, w, h, lineWidth, color }: TStaticDrawRect,
         context: CanvasRenderingContext2D,
     ) {
+        context?.beginPath();
         context?.rect(x, y, w, h);
+        context!.lineWidth = lineWidth;
+        context!.strokeStyle = color;
         context?.stroke();
     }
 }

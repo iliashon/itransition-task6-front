@@ -1,11 +1,13 @@
 import Tool from "@/tools/Tool";
 import { Socket } from "socket.io-client";
 import { DefaultEventsMap } from "@socket.io/component-emitter";
+import { TStaticDrawCircle } from "@/types/TStaticDraw";
 
 export default class Circle extends Tool {
     private isMouseDown: boolean;
     private startX: number | null;
     private startY: number | null;
+    private radius: number | null;
     private saved: string | null;
     constructor(
         canvas: HTMLCanvasElement,
@@ -15,6 +17,7 @@ export default class Circle extends Tool {
         this.isMouseDown = false;
         this.startX = null;
         this.startY = null;
+        this.radius = null;
         this.saved = null;
         this.listen();
     }
@@ -27,6 +30,17 @@ export default class Circle extends Tool {
 
     mouseUpHandler(e: MouseEvent) {
         this.isMouseDown = false;
+        const finalRect = {
+            x: this.startX,
+            y: this.startY,
+            r: this.radius,
+            color: this.context?.strokeStyle,
+            lineWidth: this.context?.lineWidth,
+        };
+        this.socket?.emit("drawing", {
+            method: "circle",
+            points: finalRect,
+        });
     }
     mouseDownHandler(e: MouseEvent) {
         this.isMouseDown = true;
@@ -62,7 +76,19 @@ export default class Circle extends Tool {
             );
             this.context?.beginPath();
             this.context?.arc(x, y, r, 0, 2 * Math.PI);
+            this.radius = r;
             this.context?.stroke();
         };
+    }
+
+    static draw(
+        { x, y, r, lineWidth, color }: TStaticDrawCircle,
+        context: CanvasRenderingContext2D,
+    ) {
+        context?.beginPath();
+        context?.arc(x, y, r, 0, 2 * Math.PI);
+        context!.lineWidth = lineWidth;
+        context!.strokeStyle = color;
+        context?.stroke();
     }
 }

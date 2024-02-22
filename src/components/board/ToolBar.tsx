@@ -9,6 +9,13 @@ import { io, Socket } from "socket.io-client";
 import { DefaultEventsMap } from "@socket.io/component-emitter";
 import { useParams } from "next/navigation";
 import { IPropertyTool } from "@/types/IPropertyTool";
+import Tool from "@/tools/Tool";
+import {
+    TStaticDrawBrush,
+    TStaticDrawCircle,
+    TStaticDrawEraser,
+    TStaticDrawRect,
+} from "@/types/TStaticDraw";
 
 export default function ToolBar({
     canvas,
@@ -41,13 +48,47 @@ export default function ToolBar({
         const socket = io(`http://localhost:4000?board=${params.board}`);
         setSocket(socket);
         socket?.on("get-points", (data) => {
-            data.forEach(
-                (item: {
-                    points: { x: number; y: number; w: number; h: number };
-                }) => {
-                    Rect.draw(item.points, canvas.current?.getContext("2d")!);
-                },
-            );
+            data.forEach((item: any) => {
+                switch (item.method) {
+                    case "rect":
+                        Rect.draw(
+                            item.points as TStaticDrawRect,
+                            canvas.current?.getContext(
+                                "2d",
+                            ) as CanvasRenderingContext2D,
+                        );
+                        break;
+                    case "circle":
+                        Circle.draw(
+                            item.points as TStaticDrawCircle,
+                            canvas.current?.getContext(
+                                "2d",
+                            ) as CanvasRenderingContext2D,
+                        );
+                        break;
+                    case "line":
+                        console.log(item);
+                        break;
+                    case "eraser":
+                        console.log(item);
+                        Eraser.draw(
+                            item.points as TStaticDrawEraser,
+                            canvas.current?.getContext(
+                                "2d",
+                            ) as CanvasRenderingContext2D,
+                        );
+                        break;
+                    case "brush":
+                        console.log(item);
+                        Brush.draw(
+                            item.points as TStaticDrawBrush,
+                            canvas.current?.getContext(
+                                "2d",
+                            ) as CanvasRenderingContext2D,
+                        );
+                        break;
+                }
+            });
         });
         socket?.emit("get-points");
     }, []);
@@ -65,7 +106,7 @@ export default function ToolBar({
                 <button
                     className={`${activeTool[0] ? "scale-125" : ""} duration-200`}
                     onClick={() => {
-                        new Brush(canvas.current!);
+                        new Brush(canvas.current!, socket);
                         handleActiveTool(0);
                     }}
                 >
@@ -83,7 +124,7 @@ export default function ToolBar({
                 <button
                     className={`${activeTool[2] ? "scale-125" : ""} duration-200`}
                     onClick={() => {
-                        new Circle(canvas.current!);
+                        new Circle(canvas.current!, socket);
                         handleActiveTool(2);
                     }}
                 >
@@ -92,7 +133,7 @@ export default function ToolBar({
                 <button
                     className={`${activeTool[3] ? "scale-125" : ""} duration-200`}
                     onClick={() => {
-                        new Line(canvas.current!);
+                        new Line(canvas.current!, socket);
                         handleActiveTool(3);
                     }}
                 >
@@ -101,7 +142,7 @@ export default function ToolBar({
                 <button
                     className={`${activeTool[4] ? "scale-125" : ""} duration-200`}
                     onClick={() => {
-                        new Eraser(canvas.current!);
+                        new Eraser(canvas.current!, socket);
                         handleActiveTool(4);
                     }}
                 >

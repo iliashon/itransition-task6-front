@@ -7,6 +7,8 @@ export default class Line extends Tool {
     private startX: number | null;
     private startY: number | null;
     private saved: string | null;
+    private lastX: number | null;
+    private lastY: number | null;
     constructor(
         canvas: HTMLCanvasElement,
         socket?: Socket<DefaultEventsMap, DefaultEventsMap>,
@@ -15,6 +17,8 @@ export default class Line extends Tool {
         this.isMouseDown = false;
         this.startX = null;
         this.startY = null;
+        this.lastX = null;
+        this.lastY = null;
         this.saved = null;
         this.listen();
     }
@@ -27,6 +31,18 @@ export default class Line extends Tool {
 
     mouseUpHandler(e: MouseEvent) {
         this.isMouseDown = false;
+        const finalRect = {
+            x: this.startX,
+            y: this.startY,
+            x1: this.lastX,
+            y1: this.lastY,
+            color: this.context?.strokeStyle,
+            lineWidth: this.context?.lineWidth,
+        };
+        this.socket?.emit("drawing", {
+            method: "line",
+            points: finalRect,
+        });
     }
     mouseDownHandler(e: MouseEvent) {
         this.isMouseDown = true;
@@ -61,6 +77,8 @@ export default class Line extends Tool {
             this.context?.beginPath();
             this.context?.moveTo(this.startX!, this.startY!);
             this.context?.lineTo(x, y);
+            this.lastX = x;
+            this.lastY = y;
             this.context?.stroke();
         };
     }
