@@ -17,6 +17,7 @@ export default class Brush extends Tool {
         this.context!.lineWidth = 5;
         this.startX = null;
         this.startY = null;
+        this.context!.lineCap = "round";
     }
 
     listen() {
@@ -67,8 +68,9 @@ export default class Brush extends Tool {
         context?.beginPath();
         context?.moveTo(x, y);
         context?.lineTo(x1, y1);
+        context?.stroke();
+        context!.lineCap = "round";
         context!.lineWidth = lineWidth;
         context!.strokeStyle = "#000000";
-        context?.stroke();
     }
 }

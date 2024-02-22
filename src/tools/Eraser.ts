@@ -26,8 +26,8 @@ export default class Eraser extends Brush {
             method: "eraser",
             points: finalRect,
         });
-        this.startX = x;
         this.startY = y;
+        this.startX = x;
         this.context?.stroke();
     }
     static draw(
@@ -35,10 +35,11 @@ export default class Eraser extends Brush {
         context: CanvasRenderingContext2D,
     ) {
         context?.beginPath();
-        context?.moveTo(x, y);
+        context.moveTo(x, y);
         context?.lineTo(x1, y1);
+        context?.stroke();
+        context!.lineCap = "round";
         context!.lineWidth = lineWidth;
         context!.strokeStyle = color;
-        context?.stroke();
     }
 }
