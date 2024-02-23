@@ -12,6 +12,11 @@ export function ModalCreateBoard({
 }) {
     const [inputValue, setInputValue] = useState<string>("");
 
+    const handleSendForm = () => {
+        handleCreateBoard(inputValue);
+        setInputValue("");
+    };
+
     return (
         <>
             <div
@@ -33,14 +38,15 @@ export function ModalCreateBoard({
                     className="border-b border-black py-1 px-2 focus:outline-none"
                     placeholder="Board name"
                     value={inputValue}
+                    onKeyDown={(e) =>
+                        e.code === "Enter" ? handleSendForm() : ""
+                    }
                     onChange={(e) => setInputValue(e.target.value)}
                 />
                 <button
-                    className="bg-black rounded-lg text-white py-2"
-                    onClick={() => {
-                        handleCreateBoard(inputValue);
-                        setInputValue("");
-                    }}
+                    disabled={inputValue.length === 0}
+                    className={`bg-black rounded-lg text-white py-2 duration-300 ${inputValue.length === 0 ? "opacity-50" : ""}`}
+                    onClick={handleSendForm}
                 >
                     Create
                 </button>

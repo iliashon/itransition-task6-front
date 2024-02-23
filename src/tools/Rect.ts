@@ -97,8 +97,10 @@ export default class Rect extends Tool {
     ) {
         context?.beginPath();
         context?.rect(x, y, w, h);
-        context!.lineWidth = lineWidth;
-        context!.strokeStyle = color;
+        if (context) {
+            context.lineWidth = lineWidth;
+            context.strokeStyle = color;
+        }
         context?.stroke();
     }
 }

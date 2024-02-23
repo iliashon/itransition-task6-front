@@ -9,6 +9,8 @@ import Image from "next/image";
 import { IBoardInfo } from "@/types/IBoardInfo";
 import { ModalCreateBoard } from "@/components/ModalCreateBoard";
 import { ClipLoader } from "react-spinners";
+import { Alert } from "@mui/material";
+import Link from "next/link";
 const socket = io("http://localhost:4000", { autoConnect: false });
 
 export default function Board() {
@@ -49,12 +51,12 @@ export default function Board() {
 
     return (
         <>
+            <Header />
             <ModalCreateBoard
                 open={isOpenModal}
                 handleOpenModal={handleOpenModal}
                 handleCreateBoard={handleCreateBoard}
             />
-            <Header />
             <div className="mt-24 mx-6">
                 <div className="flex justify-between">
                     <h2 className="text-4xl">Boards</h2>
@@ -98,12 +100,12 @@ export default function Board() {
                                               >
                                                   <MdDeleteOutline className="h-7 w-7 text-white" />
                                               </button>
-                                              <a
-                                                  href={`boards/${board.id}`}
+                                              <Link
+                                                  href={`boards/${board.id}?name=${board.name}`}
                                                   className="bg-green-500 px-3 py-1 rounded-xl hover:opacity-70 duration-300"
                                               >
                                                   <MdDraw className="h-7 w-7 text-white " />
-                                              </a>
+                                              </Link>
                                           </div>
                                       </div>
                                   </li>
@@ -128,6 +130,13 @@ export default function Board() {
                     ""
                 )}
             </div>
+            {localStorage.getItem("boards") ? (
+                <Alert className="absolute bottom-4 left-4" severity="error">
+                    {localStorage.getItem("boards")}
+                </Alert>
+            ) : (
+                ""
+            )}
         </>
     );
 }
