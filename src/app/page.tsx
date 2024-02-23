@@ -26,7 +26,8 @@ export default function Home() {
                                 Ilya Tupalski, Task №6
                             </h1>
                             <p className="mt-6 text-lg leading-8 text-gray-600">
-                                Front: NextJS, Tailwind, Socket.io-client, MUI
+                                Front: NextJS, Tailwind, Socket.io-client, MUI,
+                                Canvas
                                 <br />
                                 Back: NodeJS, Express, Socket.io-server, AWS
                             </p>

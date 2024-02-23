@@ -35,11 +35,11 @@ export default class Eraser extends Brush {
         { x, y, x1, y1, lineWidth, color }: TStaticDrawEraser,
         context: CanvasRenderingContext2D,
     ) {
-        context?.beginPath();
-        context.moveTo(x, y);
-        context?.lineTo(x1, y1);
-        context?.stroke();
         if (context) {
+            context?.beginPath();
+            context.moveTo(x, y);
+            context?.lineTo(x1, y1);
+            context?.stroke();
             context!.lineCap = "round";
             context!.lineWidth = lineWidth;
             context!.strokeStyle = color;
