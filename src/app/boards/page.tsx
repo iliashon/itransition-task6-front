@@ -18,6 +18,10 @@ export default function Board() {
         handleOpenModal();
     };
 
+    const handleDeleteBoard = (name: string) => {
+        socket.emit("delete-board", name);
+    };
+
     const handleOpenModal = () => {
         setIsOpenModal(!isOpenModal);
     };
@@ -79,7 +83,14 @@ export default function Board() {
                                               {board.name}
                                           </span>
                                           <div className="flex gap-3">
-                                              <button className="bg-red-500 px-3 py-1 rounded-xl hover:opacity-70 duration-300">
+                                              <button
+                                                  onClick={() =>
+                                                      handleDeleteBoard(
+                                                          board.id,
+                                                      )
+                                                  }
+                                                  className="bg-red-500 px-3 py-1 rounded-xl hover:opacity-70 duration-300"
+                                              >
                                                   <MdDeleteOutline className="h-7 w-7 text-white" />
                                               </button>
                                               <a
