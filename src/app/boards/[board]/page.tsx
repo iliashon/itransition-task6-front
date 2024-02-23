@@ -12,7 +12,7 @@ export default function Page() {
 
     useEffect(() => {
         setSizeCanvas({
-            width: window.innerWidth - 80,
+            width: window.innerWidth,
             height: window.innerHeight,
         });
     }, []);

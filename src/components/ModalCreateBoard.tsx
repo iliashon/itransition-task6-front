@@ -1,11 +1,4 @@
-import React, { useState } from "react";
-import {
-    Button,
-    Dialog,
-    DialogHeader,
-    DialogBody,
-    DialogFooter,
-} from "@material-tailwind/react";
+import { useState } from "react";
 import { IoClose } from "react-icons/io5";
 
 export function ModalCreateBoard({
@@ -44,7 +37,10 @@ export function ModalCreateBoard({
                 />
                 <button
                     className="bg-black rounded-lg text-white py-2"
-                    onClick={() => handleCreateBoard(inputValue)}
+                    onClick={() => {
+                        handleCreateBoard(inputValue);
+                        setInputValue("");
+                    }}
                 >
                     Create
                 </button>
