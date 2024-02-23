@@ -55,6 +55,7 @@ export default class Brush extends Tool {
         this.socket?.emit("drawing", {
             method: "brush",
             points: finalRect,
+            image: this.canvas.toDataURL(),
         });
         this.startY = y;
         this.startX = x;
@@ -71,6 +72,6 @@ export default class Brush extends Tool {
         context?.stroke();
         context!.lineCap = "round";
         context!.lineWidth = lineWidth;
-        context!.strokeStyle = "#000000";
+        context!.strokeStyle = color;
     }
 }

@@ -43,6 +43,7 @@ export default class Line extends Tool {
         this.socket?.emit("drawing", {
             method: "line",
             points: finalRect,
+            image: this.canvas.toDataURL(),
         });
     }
     mouseDownHandler(e: MouseEvent) {

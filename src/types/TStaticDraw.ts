@@ -43,3 +43,15 @@ export type TStaticDrawLine = {
     x: number;
     y: number;
 };
+
+export type TAllStaticDrawTypes =
+    | TStaticDrawLine
+    | TStaticDrawRect
+    | TStaticDrawBrush
+    | TStaticDrawEraser
+    | TStaticDrawCircle;
+
+export type TDrawAction = {
+    method: string;
+    points: TAllStaticDrawTypes;
+};

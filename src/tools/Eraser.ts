@@ -25,6 +25,7 @@ export default class Eraser extends Brush {
         this.socket?.emit("drawing", {
             method: "eraser",
             points: finalRect,
+            image: this.canvas.toDataURL(),
         });
         this.startY = y;
         this.startX = x;

@@ -16,14 +16,16 @@ import { io, Socket } from "socket.io-client";
 import { DefaultEventsMap } from "@socket.io/component-emitter";
 import { useParams } from "next/navigation";
 import { IPropertyTool } from "@/types/IPropertyTool";
-import Tool from "@/tools/Tool";
+
 import {
+    TDrawAction,
     TStaticDrawBrush,
     TStaticDrawCircle,
     TStaticDrawEraser,
     TStaticDrawLine,
     TStaticDrawRect,
 } from "@/types/TStaticDraw";
+import drawAction from "@/utils/drawAction";
 
 export default function ToolBar({
     canvas,
@@ -41,7 +43,7 @@ export default function ToolBar({
         useState<Socket<DefaultEventsMap, DefaultEventsMap>>();
     const params = useParams();
     const [propertyTool, setPropertyTool] = useState<IPropertyTool>({
-        strokeColor: "#000000",
+        strokeColor: "",
         lineWidth: 5,
     });
 
@@ -55,55 +57,21 @@ export default function ToolBar({
         const socket = io(`http://localhost:4000?board=${params.board}`);
         setSocket(socket);
         socket?.on("get-points", (data) => {
-            data.forEach((item: any) => {
-                switch (item.method) {
-                    case "rect":
-                        Rect.draw(
-                            item.points as TStaticDrawRect,
-                            canvas.current?.getContext(
-                                "2d",
-                            ) as CanvasRenderingContext2D,
-                        );
-                        break;
-                    case "circle":
-                        Circle.draw(
-                            item.points as TStaticDrawCircle,
-                            canvas.current?.getContext(
-                                "2d",
-                            ) as CanvasRenderingContext2D,
-                        );
-                        break;
-                    case "line":
-                        Line.draw(
-                            item.points as TStaticDrawLine,
-                            canvas.current?.getContext(
-                                "2d",
-                            ) as CanvasRenderingContext2D,
-                        );
-                        break;
-                    case "eraser":
-                        Eraser.draw(
-                            item.points as TStaticDrawEraser,
-                            canvas.current?.getContext(
-                                "2d",
-                            ) as CanvasRenderingContext2D,
-                        );
-                        break;
-                    case "brush":
-                        Brush.draw(
-                            item.points as TStaticDrawBrush,
-                            canvas.current?.getContext(
-                                "2d",
-                            ) as CanvasRenderingContext2D,
-                        );
-                        break;
-                }
+            data.forEach((item: TDrawAction) => {
+                drawAction(
+                    item,
+                    canvas.current?.getContext(
+                        "2d",
+                    ) as CanvasRenderingContext2D,
+                );
             });
         });
         socket?.emit("get-points");
-        setPropertyTool({
-            lineWidth: 5,
-            strokeColor: "#000000",
+        socket?.on("drawing", (data: TDrawAction) => {
+            drawAction(
+                data,
+                canvas.current?.getContext("2d") as CanvasRenderingContext2D,
+            );
         });
     }, []);
 
@@ -114,10 +82,10 @@ export default function ToolBar({
     }, [propertyTool]);
 
     const handleDownload = () => {
-        const dataUrl = canvas.current?.toDataURL();
+        const dataUrl = canvas.current?.toDataURL("image/jpeg");
         const a = document.createElement("a");
         a.href = dataUrl as string;
-        a.download = "canvas.jpg";
+        a.download = "canvas";
         a.click();
     };
 

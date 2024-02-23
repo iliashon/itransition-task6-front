@@ -1,8 +1,5 @@
 import { Socket } from "socket.io-client";
 import { DefaultEventsMap } from "@socket.io/component-emitter";
-import { IPropertyTool } from "@/types/IPropertyTool";
-import Rect from "@/tools/Rect";
-import { TStaticDrawRect } from "@/types/TStaticDraw";
 
 export default class Tool {
     public canvas: HTMLCanvasElement;

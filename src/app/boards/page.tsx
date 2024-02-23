@@ -4,28 +4,33 @@ import Header from "@/components/layout/Header";
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import { FaPlus } from "react-icons/fa";
+import { MdDeleteOutline, MdDraw } from "react-icons/md";
+import Image from "next/image";
+import { IBoardInfo } from "@/types/IBoardInfo";
+import { ModalCreateBoard } from "@/components/ModalCreateBoard";
 const socket = io("http://localhost:4000", { autoConnect: false });
 
-interface IBoardTitle {
-    name: string;
-    id: string;
-}
-
 export default function Board() {
-    const [boards, setRooms] = useState<IBoardTitle[]>();
-    const handleCreateRoom = () => {
-        const name = prompt("Name room");
+    const [boards, setRooms] = useState<IBoardInfo[]>();
+    const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+    const handleCreateBoard = (name: string) => {
         socket.emit("create-board", { name: name });
+        handleOpenModal();
+    };
+
+    const handleOpenModal = () => {
+        setIsOpenModal(!isOpenModal);
     };
 
     useEffect(() => {
         socket.connect();
         socket.on("get-boards", (data) => {
-            const boardsArr: IBoardTitle[] = [];
+            const boardsArr: IBoardInfo[] = [];
             for (const board in data) {
                 boardsArr.push({
                     id: board,
                     name: data[board].name,
+                    image: data[board].preview,
                 });
             }
             setRooms(boardsArr);
@@ -35,33 +40,70 @@ export default function Board() {
 
     return (
         <>
+            <ModalCreateBoard
+                open={isOpenModal}
+                handleOpenModal={handleOpenModal}
+                handleCreateBoard={handleCreateBoard}
+            />
             <Header />
             <div className="mt-24 mx-6">
                 <div className="flex justify-between">
                     <h2 className="text-4xl">Boards</h2>
                     <button
-                        onClick={handleCreateRoom}
+                        onClick={handleOpenModal}
                         className="bg-black text-white px-4 flex justify-center items-center gap-3 rounded-xl"
                     >
                         Create board
                         <FaPlus />
                     </button>
                 </div>
-                <div className="mt-10 flex justify-between flex-wrap gap-3">
+                <ul className="mt-10 flex justify-between flex-wrap gap-3">
                     {boards
                         ? boards.map((board) => {
                               return (
-                                  <a
-                                      href={`boards/${board.id}`}
+                                  <li
                                       key={board.id}
-                                      className="w-52 h-36 border flex justify-center items-center rounded-xl"
+                                      className="w-80 h-52 border flex flex-col rounded-xl"
                                   >
-                                      <span>{board.name}</span>
-                                  </a>
+                                      <div className="w-full h-3/4 border-b rounded-t-xl overflow-hidden">
+                                          <Image
+                                              className="w-full h-full object-cover object-center"
+                                              src={board.image || "/photo.jpg"}
+                                              alt=""
+                                              width={50}
+                                              height={50}
+                                          />
+                                      </div>
+                                      <div className="flex h-1/4 items-center justify-between px-4">
+                                          <span className="font-bold text-xl">
+                                              {board.name}
+                                          </span>
+                                          <div className="flex gap-3">
+                                              <button className="bg-red-500 px-3 py-1 rounded-xl hover:opacity-70 duration-300">
+                                                  <MdDeleteOutline className="h-7 w-7 text-white" />
+                                              </button>
+                                              <a
+                                                  href={`boards/${board.id}`}
+                                                  className="bg-green-500 px-3 py-1 rounded-xl hover:opacity-70 duration-300"
+                                              >
+                                                  <MdDraw className="h-7 w-7 text-white " />
+                                              </a>
+                                          </div>
+                                      </div>
+                                  </li>
                               );
                           })
-                        : "Rooms is empty"}
-                </div>
+                        : ""}
+                </ul>
+                {boards?.length === 0 ? (
+                    <div className="text-center mt-32">
+                        <h2 className="text-xl font-light">
+                            The list of boards is empty
+                        </h2>
+                    </div>
+                ) : (
+                    ""
+                )}
             </div>
         </>
     );

@@ -40,6 +40,7 @@ export default class Circle extends Tool {
         this.socket?.emit("drawing", {
             method: "circle",
             points: finalRect,
+            image: this.canvas.toDataURL(),
         });
     }
     mouseDownHandler(e: MouseEvent) {

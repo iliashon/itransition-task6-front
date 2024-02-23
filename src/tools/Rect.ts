@@ -44,6 +44,7 @@ export default class Rect extends Tool {
         this.socket?.emit("drawing", {
             method: "rect",
             points: finalRect,
+            image: this.canvas.toDataURL(),
         });
     }
     mouseDownHandler(e: MouseEvent) {
