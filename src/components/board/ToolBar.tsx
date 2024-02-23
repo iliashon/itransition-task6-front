@@ -111,49 +111,84 @@ export default function ToolBar({
                         <VscHome className="h-8 w-8 text-white" />
                     </Link>
                     <button
-                        className={`${activeTool[0] ? "scale-125" : ""} duration-200`}
+                        className={`${activeTool[0] ? `scale-125` : ""} duration-200`}
                         onClick={() => {
                             new Brush(canvas.current!, socket);
                             handleActiveTool(0);
                         }}
                     >
-                        <LuBrush className="h-8 w-8 text-white" />
+                        <LuBrush
+                            color={
+                                activeTool[0]
+                                    ? propertyTool.strokeColor
+                                    : "white"
+                            }
+                            className="duration-200 h-8 w-8"
+                        />
                     </button>
                     <button
-                        className={`${activeTool[1] ? "scale-125" : ""} duration-200`}
+                        className={`${activeTool[1] ? `scale-125` : ""} duration-200`}
                         onClick={() => {
                             new Rect(canvas.current!, socket);
                             handleActiveTool(1);
                         }}
                     >
-                        <LuSquare className="h-8 w-8 text-white" />
+                        <LuSquare
+                            color={
+                                activeTool[1]
+                                    ? propertyTool.strokeColor
+                                    : "white"
+                            }
+                            className="h-8 w-8 text-white"
+                        />
                     </button>
                     <button
-                        className={`${activeTool[2] ? "scale-125" : ""} duration-200`}
+                        className={`${activeTool[2] ? `scale-125` : ""} duration-200`}
                         onClick={() => {
                             new Circle(canvas.current!, socket);
                             handleActiveTool(2);
                         }}
                     >
-                        <LuCircle className="h-8 w-8 text-white" />
+                        <LuCircle
+                            color={
+                                activeTool[2]
+                                    ? propertyTool.strokeColor
+                                    : "white"
+                            }
+                            className="h-8 w-8 text-white"
+                        />
                     </button>
                     <button
-                        className={`${activeTool[3] ? "scale-125" : ""} duration-200`}
+                        className={`${activeTool[3] ? `scale-125` : ""} duration-200`}
                         onClick={() => {
                             new Line(canvas.current!, socket);
                             handleActiveTool(3);
                         }}
                     >
-                        <LuMinus className="h-8 w-8 text-white rotate-45" />
+                        <LuMinus
+                            color={
+                                activeTool[3]
+                                    ? propertyTool.strokeColor
+                                    : "white"
+                            }
+                            className="h-8 w-8 text-white rotate-45"
+                        />
                     </button>
                     <button
-                        className={`${activeTool[4] ? "scale-125" : ""} duration-200`}
+                        className={`${activeTool[4] ? `scale-125` : ""} duration-200`}
                         onClick={() => {
                             new Eraser(canvas.current!, socket);
                             handleActiveTool(4);
                         }}
                     >
-                        <LuEraser className="h-8 w-8 text-white" />
+                        <LuEraser
+                            color={
+                                activeTool[4]
+                                    ? propertyTool.strokeColor
+                                    : "white"
+                            }
+                            className="h-8 w-8 text-white"
+                        />
                     </button>
                 </div>
                 <div className="flex flex-col items-center gap-5">
