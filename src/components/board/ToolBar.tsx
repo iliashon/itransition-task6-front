@@ -209,7 +209,7 @@ export default function ToolBar({
                 <div className="flex flex-col items-center gap-5">
                     <div className="w-12 h-8 overflow-hidden rounded-lg relative">
                         <input
-                            className="h-[200%] w-[200%] -top-1/2 -left-1/2 absolute cursor-pointer"
+                            className="w-16 h-12 absolute -top-[5px] -left-[5px] cursor-pointer"
                             type="color"
                             value={propertyTool.strokeColor}
                             onChange={(e) => {
@@ -234,7 +234,7 @@ export default function ToolBar({
                         }}
                     />
                     <button onClick={handleDownload}>
-                        <LuDownload className="h-8 w-8 text-white cursor-pointer" />
+                        <LuDownload className="h-8 w-8 text-white cursor-pointer hover:scale-125 duration-300" />
                     </button>
                 </div>
             </div>

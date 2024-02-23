@@ -70,8 +70,10 @@ export default class Brush extends Tool {
         context?.moveTo(x, y);
         context?.lineTo(x1, y1);
         context?.stroke();
-        context!.lineCap = "round";
-        context!.lineWidth = lineWidth;
-        context!.strokeStyle = color;
+        if (context) {
+            context!.lineCap = "round";
+            context!.lineWidth = lineWidth;
+            context!.strokeStyle = color;
+        }
     }
 }

@@ -88,8 +88,10 @@ export default class Circle extends Tool {
     ) {
         context?.beginPath();
         context?.arc(x, y, r, 0, 2 * Math.PI);
-        context!.lineWidth = lineWidth;
-        context!.strokeStyle = color;
+        if (context) {
+            context!.lineWidth = lineWidth;
+            context!.strokeStyle = color;
+        }
         context?.stroke();
     }
 }

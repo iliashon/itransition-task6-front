@@ -92,8 +92,10 @@ export default class Line extends Tool {
         context?.moveTo(x, y);
         context?.lineTo(x1, y1);
         context?.stroke();
-        context!.lineCap = "round";
-        context!.lineWidth = lineWidth;
-        context!.strokeStyle = "#000000";
+        if (context) {
+            context!.lineCap = "round";
+            context!.lineWidth = lineWidth;
+            context!.strokeStyle = "#000000";
+        }
     }
 }

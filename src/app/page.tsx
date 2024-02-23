@@ -26,10 +26,9 @@ export default function Home() {
                                 Ilya Tupalski, Task №6
                             </h1>
                             <p className="mt-6 text-lg leading-8 text-gray-600">
-                                Front: NextJS, Tailwind, Socket.io, Redux
-                                Toolkit
+                                Front: NextJS, Tailwind, Socket.io-client, MUI
                                 <br />
-                                Back: NodeJS, Express, Socket.io
+                                Back: NodeJS, Express, Socket.io-server, AWS
                             </p>
                             <div className="mt-10 flex items-center justify-center gap-x-6">
                                 <Link

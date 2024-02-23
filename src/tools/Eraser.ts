@@ -39,8 +39,10 @@ export default class Eraser extends Brush {
         context.moveTo(x, y);
         context?.lineTo(x1, y1);
         context?.stroke();
-        context!.lineCap = "round";
-        context!.lineWidth = lineWidth;
-        context!.strokeStyle = color;
+        if (context) {
+            context!.lineCap = "round";
+            context!.lineWidth = lineWidth;
+            context!.strokeStyle = color;
+        }
     }
 }
