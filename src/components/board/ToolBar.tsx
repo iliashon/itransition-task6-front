@@ -26,6 +26,11 @@ import {
     TStaticDrawRect,
 } from "@/types/TStaticDraw";
 import drawAction from "@/utils/drawAction";
+import Link from "next/link";
+import { VscHome } from "react-icons/vsc";
+import { BiArrowFromLeft } from "react-icons/bi";
+import { SlArrowRight } from "react-icons/sl";
+import { FaGripLinesVertical } from "react-icons/fa";
 
 export default function ToolBar({
     canvas,
@@ -90,8 +95,14 @@ export default function ToolBar({
     };
 
     return (
-        <div className="h-[98vh] mt-[1vh] rounded-xl ml-2 w-16 bg-gray-400 absolute top-0 flex flex-col justify-between left-0 py-4">
+        <div className=" rounded-r-xl w-16 -left-16 hover:left-0 duration-300 absolute top-1/2 transform -translate-y-1/2 backdrop-blur-sm bg-gray-600/30 flex flex-col justify-between gap-5 py-4">
+            <div className="flex items-center rounded-r-lg absolute top-1/2 transform -translate-y-1/2 -right-6 h-20 bg-gray-600/30">
+                <FaGripLinesVertical className="h-6 w-6 text-white" />
+            </div>
             <div className="flex flex-col items-center gap-5">
+                <Link href={"/boards"}>
+                    <VscHome className="h-8 w-8 text-white" />
+                </Link>
                 <button
                     className={`${activeTool[0] ? "scale-125" : ""} duration-200`}
                     onClick={() => {
@@ -139,18 +150,21 @@ export default function ToolBar({
                 </button>
             </div>
             <div className="flex flex-col items-center gap-5">
-                <input
-                    type="color"
-                    onChange={(e) => {
-                        setPropertyTool({
-                            ...propertyTool,
-                            strokeColor: e.target.value,
-                        });
-                    }}
-                />
+                <div className="w-12 h-8 overflow-hidden rounded-lg relative">
+                    <input
+                        className="h-[200%] w-[200%] -top-1/2 -left-1/2 absolute cursor-pointer"
+                        type="color"
+                        onChange={(e) => {
+                            setPropertyTool({
+                                ...propertyTool,
+                                strokeColor: e.target.value,
+                            });
+                        }}
+                    />
+                </div>
                 <input
                     type="number"
-                    className="w-12"
+                    className="w-12 h-8 px-2 rounded-lg border-0 focus:outline-none"
                     value={propertyTool.lineWidth}
                     onChange={(e) => {
                         setPropertyTool({
