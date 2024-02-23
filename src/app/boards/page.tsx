@@ -17,6 +17,7 @@ export default function Board() {
     const [boards, setRooms] = useState<IBoardInfo[]>();
     const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
     const [isLoadingGetBoards, setIsLoadingGetBoards] = useState(false);
+    const [errorNotBoard, setErrorNotBoard] = useState<null | string>(null);
     const handleCreateBoard = (name: string) => {
         socket.emit("create-board", { name: name });
         handleOpenModal();
@@ -47,6 +48,13 @@ export default function Board() {
             setIsLoadingGetBoards(false);
         });
         socket.emit("get-boards");
+    }, []);
+
+    useEffect(() => {
+        setErrorNotBoard(localStorage.getItem("boards"));
+        setTimeout(() => {
+            setErrorNotBoard(null);
+        }, 7000);
     }, []);
 
     return (
@@ -130,9 +138,9 @@ export default function Board() {
                     ""
                 )}
             </div>
-            {localStorage.getItem("boards") ? (
+            {errorNotBoard ? (
                 <Alert className="absolute bottom-4 left-4" severity="error">
-                    {localStorage.getItem("boards")}
+                    {errorNotBoard}
                 </Alert>
             ) : (
                 ""
