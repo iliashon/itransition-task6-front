@@ -11,7 +11,10 @@ import { ModalCreateBoard } from "@/components/ModalCreateBoard";
 import { ClipLoader } from "react-spinners";
 import { Alert } from "@mui/material";
 import Link from "next/link";
-const socket = io("api.itupalski.com:4145", { autoConnect: false });
+const socket = io("ws://api.itupalski.com", {
+    autoConnect: false,
+    transports: ["websocket"],
+});
 
 export default function Board() {
     const [boards, setRooms] = useState<IBoardInfo[]>();

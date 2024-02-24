@@ -55,7 +55,9 @@ export default function ToolBar({
     };
 
     useEffect(() => {
-        const socket = io(`api.itupalski.com:4145?board=${params.board}`);
+        const socket = io(`ws://api.itupalski.com?board=${params.board}`, {
+            transports: ["websocket"],
+        });
         setSocket(socket);
         socket.on("error", () => {
             localStorage.setItem("boards", "There is no such board");
