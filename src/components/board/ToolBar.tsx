@@ -55,7 +55,7 @@ export default function ToolBar({
     };
 
     useEffect(() => {
-        const socket = io(`http://localhost:4000?board=${params.board}`);
+        const socket = io(`http://54.174.238.114:4145?board=${params.board}`);
         setSocket(socket);
         socket.on("error", () => {
             localStorage.setItem("boards", "There is no such board");
