@@ -11,7 +11,7 @@ import { ModalCreateBoard } from "@/components/ModalCreateBoard";
 import { ClipLoader } from "react-spinners";
 import { Alert } from "@mui/material";
 import Link from "next/link";
-const socket = io("ws://api.itupalski.com", {
+const socket = io("ws://api.itupalski.com:4145", {
     autoConnect: false,
     transports: ["websocket"],
 });
