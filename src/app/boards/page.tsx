@@ -13,7 +13,6 @@ import { Alert } from "@mui/material";
 import Link from "next/link";
 const socket = io("api.itupalski.com:4145", {
     autoConnect: false,
-    transports: ["websocket"],
 });
 
 export default function Board() {
@@ -37,6 +36,10 @@ export default function Board() {
     useEffect(() => {
         setIsLoadingGetBoards(true);
         socket.connect();
+        socket.on("connect_error", (err) => {
+            // the reason of the error, for example "xhr poll error"
+            console.log(err.message);
+        });
         socket.on("get-boards", (data) => {
             setIsLoadingGetBoards(true);
             const boardsArr: IBoardInfo[] = [];
